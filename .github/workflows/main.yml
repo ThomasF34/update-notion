@@ -1,0 +1,22 @@
+on: 
+  pull_request: 
+    types: [opened, edited, closed, reopened, synchronize, ready_for_review]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to update Notion
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Notion Update
+        uses: ./
+        env:
+          NOTION_BOT_SECRET_KEY: ${{ secrets.NOTION_BOT_SECRET_KEY }}
+        with:
+          status-property-name: 'Status'
+          opened: 'In progress'
+          closed: 'Done'
+

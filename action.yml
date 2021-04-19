@@ -1,0 +1,58 @@
+name: 'Update Notion'
+description: 'Will update notion pages on PR update'
+author: 'Thomas Falcone'
+branding: 
+  icon: 'book-open'
+  color: 'green'
+inputs:
+  status-property-name:
+      description: 'Name of the property name that will receive the new status'
+      required: false
+      default: 'Status'
+  url-property-name:
+      description: 'Name of the property name that will receive the link of the PR'
+      required: false
+      default: 'Github Url'
+  assigned:
+      description: 'Value of the status to put on the Notion Page when the PR action is `assigned`'
+      required: false
+  unassigned:
+      description: 'Value of the status to put on the Notion Page when the PR action is `unassigned`'
+      required: false
+  labeled:
+      description: 'Value of the status to put on the Notion Page when the PR action is `labeled`'
+      required: false
+  unlabeled:
+      description: 'Value of the status to put on the Notion Page when the PR action is `unlabeled`'
+      required: false
+  opened:
+      description: 'Value of the status to put on the Notion Page when the PR action is `opened`'
+      required: false
+  edited:
+      description: 'Value of the status to put on the Notion Page when the PR action is `edited`'
+      required: false
+  closed:
+      description: 'Value of the status to put on the Notion Page when the PR action is `closed`'
+      required: false
+  reopened:
+      description: 'Value of the status to put on the Notion Page when the PR action is `reopened`'
+      required: false
+  synchronize:
+      description: 'Value of the status to put on the Notion Page when the PR action is `synchronize`'
+      required: false
+  ready_for_review:
+      description: 'Value of the status to put on the Notion Page when the PR action is `ready_for_review`'
+      required: false
+  locked:
+      description: 'Value of the status to put on the Notion Page when the PR action is `locked`'
+      required: false
+  unlocked:
+      description: 'Value of the status to put on the Notion Page when the PR action is `unlocked`'
+      required: false
+  review_requested:
+      description: 'Value of the status to put on the Notion Page when the PR action is `review_requested`'
+      required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+
