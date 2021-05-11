@@ -13,6 +13,14 @@ inputs:
       description: 'Name of the property name that will receive the link of the PR'
       required: false
       default: 'Github Url'
+  required-prefix:
+      description: 'Prefix string required just before the Notion link'
+      required: false
+      default: ''
+  required-suffix:
+      description: 'Suffix string required just after the Notion link'
+      required: false
+      default: ''
   assigned:
       description: 'Value of the status to put on the Notion Page when the PR action is `assigned`'
       required: false

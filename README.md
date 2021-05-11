@@ -11,6 +11,16 @@ action
 
 Name of the url property that will receive the url of the PR
 
+### `required-suffix`
+
+In case you don't want to parse any Notion link in the PR description, you can
+ensure that a suffix is present with this parameter
+
+### `required-prefix`
+
+In case you don't want to parse any Notion link in the PR description, you can
+ensure that a prefix is present with this parameter
+
 ### `<name-of-possible-action>`
 
 If you want a different status than the name of the triggered action, you can
@@ -19,10 +29,12 @@ input a mapping value with this input
 ## Example usage
 
 ```
-uses: actions/update-notion@v1
+uses: actions/update-notion@v1.1
 env:
   NOTION_BOT_SECRET_KEY: ${{ secrets.NOTION_BOT_SECRET_KEY }}
 with:
+    - required-suffix: ')'
+    - required-prefix: '[Notion ticket]('
     - status-property-name: 'Status'
     - url-property-name: 'Github URL'
     - opened: 'In progresss'
@@ -49,3 +61,13 @@ with:
 - unlocked
 - review_requested
 - review_request_removed
+
+## Contributing
+
+Feel free to make Pull Requests to improve this action.
+
+To compile the file :
+
+```bash
+tsc index.js --t 'es2019' --allowJs --out index_es2019.js; ncc build index_es2019.js --license licenses.txt;
+```

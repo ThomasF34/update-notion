@@ -6046,10 +6046,15 @@ var _a;
 const core = __nccwpck_require__(151);
 const github = __nccwpck_require__(860);
 const fetch = __nccwpck_require__(771);
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
 const pullRequest = github.context.payload.pull_request;
 const PRBody = pullRequest.body;
 const PRHref = pullRequest.html_url;
-const urlRegex = /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
+const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
+const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
+const urlRegex = `${requiredPrefix}(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?${requiredSuffix}`;
 const urls = (_a = PRBody.match(urlRegex)) !== null && _a !== void 0 ? _a : [];
 const notionUrl = urls.find((url) => url.match("notion.so"));
 const status = core.getInput(github.context.payload.action, {
