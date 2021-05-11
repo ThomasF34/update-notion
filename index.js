@@ -16,9 +16,11 @@ const requiredSuffix = escapeRegExp(
   core.getInput("required-suffix", { required: false }) || ""
 );
 
-const urlRegex = `${requiredPrefix}(https):\/\/([\\w_-]+(?:(?:\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?${requiredSuffix}`;
-const urls = PRBody.match(urlRegex) ?? [];
-const notionUrl = urls.find((url) => url.match("notion.so"));
+const urlRegex =
+  "(https)://([\\w_-]+(?:(?:.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
+const enhancedRegex = `${requiredPrefix}${urlRegex}${requiredSuffix}`;
+const urls = PRBody.match(enhancedRegex) ?? [];
+const urlFound = urls.find((url) => url.match("notion.so"));
 
 const status = core.getInput(github.context.payload.action, {
   required: false,
@@ -29,7 +31,10 @@ const githubUrlProperty =
   "Github Url";
 const statusProperty =
   core.getInput("status-property-name", { required: false }) || "Status";
-if (notionUrl) {
+if (urlFound) {
+  const notionUrl = urlFound
+    .match(urlRegex)
+    .find((url) => url.match("notion.so"));
   const urlParts = notionUrl.split("/");
   const taskName = urlParts[urlParts.length - 1];
   const taskParts = taskName.split("-");
@@ -56,9 +61,12 @@ if (notionUrl) {
   })
     .then((res) => {
       if (!res.ok) {
-        res.json().then((json) => {
-          throw json;
-        });
+        res
+          .json()
+          .then((json) => {
+            core.setFailed(json);
+          })
+          .catch(() => core.setFailed("Error while parsing Notion response"));
       }
 
       if (!status) {

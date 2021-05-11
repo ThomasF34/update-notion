@@ -10,16 +10,20 @@ const PRBody = pullRequest.body;
 const PRHref = pullRequest.html_url;
 const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
 const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
-const urlRegex = `${requiredPrefix}(https):\/\/([\\w_-]+(?:(?:\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?${requiredSuffix}`;
-const urls = (_a = PRBody.match(urlRegex)) !== null && _a !== void 0 ? _a : [];
-const notionUrl = urls.find((url) => url.match("notion.so"));
+const urlRegex = "(https)://([\\w_-]+(?:(?:.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
+const enhancedRegex = `${requiredPrefix}${urlRegex}${requiredSuffix}`;
+const urls = (_a = PRBody.match(enhancedRegex)) !== null && _a !== void 0 ? _a : [];
+const urlFound = urls.find((url) => url.match("notion.so"));
 const status = core.getInput(github.context.payload.action, {
     required: false,
 });
 const githubUrlProperty = core.getInput("github-url-property-name", { required: false }) ||
     "Github Url";
 const statusProperty = core.getInput("status-property-name", { required: false }) || "Status";
-if (notionUrl) {
+if (urlFound) {
+    const notionUrl = urlFound
+        .match(urlRegex)
+        .find((url) => url.match("notion.so"));
     const urlParts = notionUrl.split("/");
     const taskName = urlParts[urlParts.length - 1];
     const taskParts = taskName.split("-");
@@ -45,9 +49,12 @@ if (notionUrl) {
     })
         .then((res) => {
         if (!res.ok) {
-            res.json().then((json) => {
-                throw json;
-            });
+            res
+                .json()
+                .then((json) => {
+                core.setFailed(json);
+            })
+                .catch(() => core.setFailed("Error while parsing Notion response"));
         }
         if (!status) {
             core.info(`The status ${github.context.payload.action} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
