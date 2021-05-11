@@ -2,10 +2,21 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 const fetch = require("node-fetch");
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
 const pullRequest = github.context.payload.pull_request;
 const PRBody = pullRequest.body;
 const PRHref = pullRequest.html_url;
-const urlRegex = /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
+const requiredPrefix = escapeRegExp(
+  core.getInput("required-prefix", { required: false }) || ""
+);
+const requiredSuffix = escapeRegExp(
+  core.getInput("required-suffix", { required: false }) || ""
+);
+
+const urlRegex = `${requiredPrefix}(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?${requiredSuffix}`;
 const urls = PRBody.match(urlRegex) ?? [];
 const notionUrl = urls.find((url) => url.match("notion.so"));
 
