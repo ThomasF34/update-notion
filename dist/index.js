@@ -6054,7 +6054,7 @@ const PRBody = pullRequest.body;
 const PRHref = pullRequest.html_url;
 const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
 const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
-const urlRegex = `${requiredPrefix}(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?${requiredSuffix}`;
+const urlRegex = `${requiredPrefix}(https):\/\/([\\w_-]+(?:(?:\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?${requiredSuffix}`;
 const urls = (_a = PRBody.match(urlRegex)) !== null && _a !== void 0 ? _a : [];
 const notionUrl = urls.find((url) => url.match("notion.so"));
 const status = core.getInput(github.context.payload.action, {

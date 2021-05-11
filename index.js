@@ -16,7 +16,7 @@ const requiredSuffix = escapeRegExp(
   core.getInput("required-suffix", { required: false }) || ""
 );
 
-const urlRegex = `${requiredPrefix}(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?${requiredSuffix}`;
+const urlRegex = `${requiredPrefix}(https):\/\/([\\w_-]+(?:(?:\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?${requiredSuffix}`;
 const urls = PRBody.match(urlRegex) ?? [];
 const notionUrl = urls.find((url) => url.match("notion.so"));
 
