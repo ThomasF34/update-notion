@@ -64,10 +64,10 @@ with:
 
 ## Contributing
 
-Feel free to make Pull Requests to improve this action.
+Feel free to mke Pull Requests to improve this action.
 
 To compile the file :
 
 ```bash
-tsc index.js --t 'es2019' --allowJs --out index_es2019.js; ncc build index_es2019.js --license licenses.txt;
+npm run prepare
 ```

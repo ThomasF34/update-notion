@@ -2,9 +2,9 @@
   "name": "notion-hook",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "tsc; ncc build es2019 -o dist --license licenses.txt"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@actions/core": "^1.2.7",
     "@actions/github": "^4.0.0",
-    "node-fetch": "^2.6.1"
+    "@notionhq/client": "^0.4.4",
+    "form-data": "^4.0.0"
   }
 }
