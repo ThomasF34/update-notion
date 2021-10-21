@@ -47,6 +47,10 @@ with:
 
 ## Possible action
 
+- **merged**
+- **draft**
+
+
 - assigned
 - unassigned
 - labeled

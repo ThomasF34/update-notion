@@ -16,8 +16,12 @@ jobs:
         env:
           NOTION_BOT_SECRET_KEY: ${{ secrets.NOTION_BOT_SECRET_KEY }}
         with:
+          draft: 'In progress'
+          merged: 'Done'
+
           status-property-name: 'Status'
           opened: 'In progress'
+          ready_for_review: 'In review'
           synchronize: 'In progress'
           closed: 'Done'
 
