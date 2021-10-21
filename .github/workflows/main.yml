@@ -18,5 +18,6 @@ jobs:
         with:
           status-property-name: 'Status'
           opened: 'In progress'
+          synchronize: 'In progress'
           closed: 'Done'
 

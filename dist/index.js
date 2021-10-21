@@ -1,7 +1,44 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 463:
+/***/ 9178:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+const core = __nccwpck_require__(8151);
+const github = __nccwpck_require__(2860);
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+function extractGithubParams() {
+    const pullRequest = github.context.payload.pull_request;
+    const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
+    const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
+    const status = core.getInput(github.context.payload.action, { required: false });
+    const githubUrlProperty = core.getInput("github-url-property-name", { required: false }) ||
+        "Github Url";
+    const statusProperty = core.getInput("status-property-name", { required: false }) || "Status";
+    return {
+        pullRequest: {
+            body: pullRequest.body,
+            href: pullRequest.html_url,
+            status: status
+        },
+        suffix: requiredSuffix,
+        prefix: requiredPrefix,
+        notionProperties: {
+            githubUrl: githubUrlProperty,
+            status: statusProperty
+        }
+    };
+}
+module.exports = { extractParams: extractGithubParams };
+
+
+/***/ }),
+
+/***/ 7463:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -14,8 +51,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const os = __importStar(__nccwpck_require__(87));
-const utils_1 = __nccwpck_require__(735);
+const os = __importStar(__nccwpck_require__(2087));
+const utils_1 = __nccwpck_require__(5735);
 /**
  * Commands
  *
@@ -87,7 +124,7 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 151:
+/***/ 8151:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -109,11 +146,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const command_1 = __nccwpck_require__(463);
-const file_command_1 = __nccwpck_require__(74);
-const utils_1 = __nccwpck_require__(735);
-const os = __importStar(__nccwpck_require__(87));
-const path = __importStar(__nccwpck_require__(622));
+const command_1 = __nccwpck_require__(7463);
+const file_command_1 = __nccwpck_require__(9074);
+const utils_1 = __nccwpck_require__(5735);
+const os = __importStar(__nccwpck_require__(2087));
+const path = __importStar(__nccwpck_require__(5622));
 /**
  * The code to exit an action
  */
@@ -333,7 +370,7 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 74:
+/***/ 9074:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -349,9 +386,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(__nccwpck_require__(747));
-const os = __importStar(__nccwpck_require__(87));
-const utils_1 = __nccwpck_require__(735);
+const fs = __importStar(__nccwpck_require__(5747));
+const os = __importStar(__nccwpck_require__(2087));
+const utils_1 = __nccwpck_require__(5735);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -369,7 +406,7 @@ exports.issueCommand = issueCommand;
 
 /***/ }),
 
-/***/ 735:
+/***/ 5735:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -395,15 +432,15 @@ exports.toCommandValue = toCommandValue;
 
 /***/ }),
 
-/***/ 513:
+/***/ 6513:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Context = void 0;
-const fs_1 = __nccwpck_require__(747);
-const os_1 = __nccwpck_require__(87);
+const fs_1 = __nccwpck_require__(5747);
+const os_1 = __nccwpck_require__(2087);
 class Context {
     /**
      * Hydrate the context from the environment
@@ -452,7 +489,7 @@ exports.Context = Context;
 
 /***/ }),
 
-/***/ 860:
+/***/ 2860:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -478,8 +515,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOctokit = exports.context = void 0;
-const Context = __importStar(__nccwpck_require__(513));
-const utils_1 = __nccwpck_require__(460);
+const Context = __importStar(__nccwpck_require__(6513));
+const utils_1 = __nccwpck_require__(7460);
 exports.context = new Context.Context();
 /**
  * Returns a hydrated octokit ready to use for GitHub Actions
@@ -495,7 +532,7 @@ exports.getOctokit = getOctokit;
 
 /***/ }),
 
-/***/ 879:
+/***/ 8879:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -545,7 +582,7 @@ exports.getApiBaseUrl = getApiBaseUrl;
 
 /***/ }),
 
-/***/ 460:
+/***/ 7460:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -571,12 +608,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOctokitOptions = exports.GitHub = exports.context = void 0;
-const Context = __importStar(__nccwpck_require__(513));
-const Utils = __importStar(__nccwpck_require__(879));
+const Context = __importStar(__nccwpck_require__(6513));
+const Utils = __importStar(__nccwpck_require__(8879));
 // octokit + plugins
-const core_1 = __nccwpck_require__(706);
-const plugin_rest_endpoint_methods_1 = __nccwpck_require__(145);
-const plugin_paginate_rest_1 = __nccwpck_require__(176);
+const core_1 = __nccwpck_require__(622);
+const plugin_rest_endpoint_methods_1 = __nccwpck_require__(5145);
+const plugin_paginate_rest_1 = __nccwpck_require__(6176);
 exports.context = new Context.Context();
 const baseUrl = Utils.getApiBaseUrl();
 const defaults = {
@@ -612,9 +649,9 @@ exports.getOctokitOptions = getOctokitOptions;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const http = __nccwpck_require__(605);
-const https = __nccwpck_require__(211);
-const pm = __nccwpck_require__(788);
+const http = __nccwpck_require__(8605);
+const https = __nccwpck_require__(7211);
+const pm = __nccwpck_require__(7788);
 let tunnel;
 var HttpCodes;
 (function (HttpCodes) {
@@ -1033,7 +1070,7 @@ class HttpClient {
         if (useProxy) {
             // If using proxy, need tunnel
             if (!tunnel) {
-                tunnel = __nccwpck_require__(991);
+                tunnel = __nccwpck_require__(2991);
             }
             const agentOptions = {
                 maxSockets: maxSockets,
@@ -1151,7 +1188,7 @@ exports.HttpClient = HttpClient;
 
 /***/ }),
 
-/***/ 788:
+/***/ 7788:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1216,7 +1253,857 @@ exports.checkBypass = checkBypass;
 
 /***/ }),
 
-/***/ 859:
+/***/ 3038:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _Client_auth, _Client_logLevel, _Client_logger, _Client_prefixUrl, _Client_timeoutMs, _Client_notionVersion, _Client_fetch, _Client_agent, _Client_userAgent;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const logging_1 = __nccwpck_require__(2177);
+const errors_1 = __nccwpck_require__(7505);
+const helpers_1 = __nccwpck_require__(402);
+const api_endpoints_1 = __nccwpck_require__(6009);
+const node_fetch_1 = __nccwpck_require__(5771);
+const package_json_1 = __nccwpck_require__(3749);
+class Client {
+    constructor(options) {
+        var _a, _b, _c, _d, _e, _f;
+        _Client_auth.set(this, void 0);
+        _Client_logLevel.set(this, void 0);
+        _Client_logger.set(this, void 0);
+        _Client_prefixUrl.set(this, void 0);
+        _Client_timeoutMs.set(this, void 0);
+        _Client_notionVersion.set(this, void 0);
+        _Client_fetch.set(this, void 0);
+        _Client_agent.set(this, void 0);
+        _Client_userAgent.set(this, void 0);
+        /*
+         * Notion API endpoints
+         */
+        this.blocks = {
+            /**
+             * Retrieve block
+             */
+            retrieve: (args) => {
+                return this.request({
+                    path: api_endpoints_1.getBlock.path(args),
+                    method: api_endpoints_1.getBlock.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.getBlock.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.getBlock.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Update block
+             */
+            update: (args) => {
+                return this.request({
+                    path: api_endpoints_1.updateBlock.path(args),
+                    method: api_endpoints_1.updateBlock.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.updateBlock.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.updateBlock.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Delete block
+             */
+            delete: (args) => {
+                return this.request({
+                    path: api_endpoints_1.deleteBlock.path(args),
+                    method: api_endpoints_1.deleteBlock.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.deleteBlock.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.deleteBlock.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            children: {
+                /**
+                 * Append block children
+                 */
+                append: (args) => {
+                    return this.request({
+                        path: api_endpoints_1.appendBlockChildren.path(args),
+                        method: api_endpoints_1.appendBlockChildren.method,
+                        query: (0, helpers_1.pick)(args, api_endpoints_1.appendBlockChildren.queryParams),
+                        body: (0, helpers_1.pick)(args, api_endpoints_1.appendBlockChildren.bodyParams),
+                        auth: args === null || args === void 0 ? void 0 : args.auth,
+                    });
+                },
+                /**
+                 * Retrieve block children
+                 */
+                list: (args) => {
+                    return this.request({
+                        path: api_endpoints_1.listBlockChildren.path(args),
+                        method: api_endpoints_1.listBlockChildren.method,
+                        query: (0, helpers_1.pick)(args, api_endpoints_1.listBlockChildren.queryParams),
+                        body: (0, helpers_1.pick)(args, api_endpoints_1.listBlockChildren.bodyParams),
+                        auth: args === null || args === void 0 ? void 0 : args.auth,
+                    });
+                },
+            },
+        };
+        this.databases = {
+            /**
+             * List databases
+             *
+             * @deprecated Please use `search`
+             */
+            list: (args) => {
+                return this.request({
+                    path: api_endpoints_1.listDatabases.path(),
+                    method: api_endpoints_1.listDatabases.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.listDatabases.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.listDatabases.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Retrieve a database
+             */
+            retrieve: (args) => {
+                return this.request({
+                    path: api_endpoints_1.getDatabase.path(args),
+                    method: api_endpoints_1.getDatabase.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.getDatabase.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.getDatabase.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Query a database
+             */
+            query: (args) => {
+                return this.request({
+                    path: api_endpoints_1.queryDatabase.path(args),
+                    method: api_endpoints_1.queryDatabase.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.queryDatabase.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.queryDatabase.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Create a database
+             */
+            create: (args) => {
+                return this.request({
+                    path: api_endpoints_1.createDatabase.path(),
+                    method: api_endpoints_1.createDatabase.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.createDatabase.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.createDatabase.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Update a database
+             */
+            update: (args) => {
+                return this.request({
+                    path: api_endpoints_1.updateDatabase.path(args),
+                    method: api_endpoints_1.updateDatabase.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.updateDatabase.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.updateDatabase.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+        };
+        this.pages = {
+            /**
+             * Create a page
+             */
+            create: (args) => {
+                return this.request({
+                    path: api_endpoints_1.createPage.path(),
+                    method: api_endpoints_1.createPage.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.createPage.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.createPage.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Retrieve a page
+             */
+            retrieve: (args) => {
+                return this.request({
+                    path: api_endpoints_1.getPage.path(args),
+                    method: api_endpoints_1.getPage.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.getPage.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.getPage.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Update page properties
+             */
+            update: (args) => {
+                return this.request({
+                    path: api_endpoints_1.updatePage.path(args),
+                    method: api_endpoints_1.updatePage.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.updatePage.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.updatePage.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            properties: {
+                /**
+                 * Retrieve page property
+                 */
+                retrieve: (args) => {
+                    return this.request({
+                        path: api_endpoints_1.getPageProperty.path(args),
+                        method: api_endpoints_1.getPageProperty.method,
+                        query: (0, helpers_1.pick)(args, api_endpoints_1.getPageProperty.queryParams),
+                        body: (0, helpers_1.pick)(args, api_endpoints_1.getPageProperty.bodyParams),
+                        auth: args === null || args === void 0 ? void 0 : args.auth,
+                    });
+                },
+            },
+        };
+        this.users = {
+            /**
+             * Retrieve a user
+             */
+            retrieve: (args) => {
+                return this.request({
+                    path: api_endpoints_1.getUser.path(args),
+                    method: api_endpoints_1.getUser.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.getUser.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.getUser.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * List all users
+             */
+            list: (args) => {
+                return this.request({
+                    path: api_endpoints_1.listUsers.path(),
+                    method: api_endpoints_1.listUsers.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.listUsers.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.listUsers.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+            /**
+             * Get details about bot
+             */
+            me: (args) => {
+                return this.request({
+                    path: api_endpoints_1.getSelf.path(),
+                    method: api_endpoints_1.getSelf.method,
+                    query: (0, helpers_1.pick)(args, api_endpoints_1.getSelf.queryParams),
+                    body: (0, helpers_1.pick)(args, api_endpoints_1.getSelf.bodyParams),
+                    auth: args === null || args === void 0 ? void 0 : args.auth,
+                });
+            },
+        };
+        __classPrivateFieldSet(this, _Client_auth, options === null || options === void 0 ? void 0 : options.auth, "f");
+        __classPrivateFieldSet(this, _Client_logLevel, (_a = options === null || options === void 0 ? void 0 : options.logLevel) !== null && _a !== void 0 ? _a : logging_1.LogLevel.WARN, "f");
+        __classPrivateFieldSet(this, _Client_logger, (_b = options === null || options === void 0 ? void 0 : options.logger) !== null && _b !== void 0 ? _b : (0, logging_1.makeConsoleLogger)(package_json_1.name), "f");
+        __classPrivateFieldSet(this, _Client_prefixUrl, ((_c = options === null || options === void 0 ? void 0 : options.baseUrl) !== null && _c !== void 0 ? _c : "https://api.notion.com") + "/v1/", "f");
+        __classPrivateFieldSet(this, _Client_timeoutMs, (_d = options === null || options === void 0 ? void 0 : options.timeoutMs) !== null && _d !== void 0 ? _d : 60000, "f");
+        __classPrivateFieldSet(this, _Client_notionVersion, (_e = options === null || options === void 0 ? void 0 : options.notionVersion) !== null && _e !== void 0 ? _e : Client.defaultNotionVersion, "f");
+        __classPrivateFieldSet(this, _Client_fetch, (_f = options === null || options === void 0 ? void 0 : options.fetch) !== null && _f !== void 0 ? _f : node_fetch_1.default, "f");
+        __classPrivateFieldSet(this, _Client_agent, options === null || options === void 0 ? void 0 : options.agent, "f");
+        __classPrivateFieldSet(this, _Client_userAgent, `notionhq-client/${package_json_1.version}`, "f");
+    }
+    /**
+     * Sends a request.
+     *
+     * @param path
+     * @param method
+     * @param query
+     * @param body
+     * @returns
+     */
+    async request({ path, method, query, body, auth, }) {
+        this.log(logging_1.LogLevel.INFO, "request start", { method, path });
+        // If the body is empty, don't send the body in the HTTP request
+        const bodyAsJsonString = !body || Object.entries(body).length === 0
+            ? undefined
+            : JSON.stringify(body);
+        const url = new URL(`${__classPrivateFieldGet(this, _Client_prefixUrl, "f")}${path}`);
+        if (query) {
+            for (const [key, value] of Object.entries(query)) {
+                if (value !== undefined) {
+                    url.searchParams.append(key, String(value));
+                }
+            }
+        }
+        const headers = {
+            ...this.authAsHeaders(auth),
+            "Notion-Version": __classPrivateFieldGet(this, _Client_notionVersion, "f"),
+            "user-agent": __classPrivateFieldGet(this, _Client_userAgent, "f"),
+        };
+        if (bodyAsJsonString !== undefined) {
+            headers["content-type"] = "application/json";
+        }
+        try {
+            const response = await errors_1.RequestTimeoutError.rejectAfterTimeout(__classPrivateFieldGet(this, _Client_fetch, "f").call(this, url.toString(), {
+                method,
+                headers,
+                body: bodyAsJsonString,
+                agent: __classPrivateFieldGet(this, _Client_agent, "f"),
+            }), __classPrivateFieldGet(this, _Client_timeoutMs, "f"));
+            const responseText = await response.text();
+            if (!response.ok) {
+                throw (0, errors_1.buildRequestError)(response, responseText);
+            }
+            const responseJson = JSON.parse(responseText);
+            this.log(logging_1.LogLevel.INFO, `request success`, { method, path });
+            return responseJson;
+        }
+        catch (error) {
+            if (!(0, errors_1.isNotionClientError)(error)) {
+                throw error;
+            }
+            // Log the error if it's one of our known error types
+            this.log(logging_1.LogLevel.WARN, `request fail`, {
+                code: error.code,
+                message: error.message,
+            });
+            if ((0, errors_1.isHTTPResponseError)(error)) {
+                // The response body may contain sensitive information so it is logged separately at the DEBUG level
+                this.log(logging_1.LogLevel.DEBUG, `failed response body`, {
+                    body: error.body,
+                });
+            }
+            throw error;
+        }
+    }
+    /**
+     * Search
+     */
+    search(args) {
+        return this.request({
+            path: api_endpoints_1.search.path(),
+            method: api_endpoints_1.search.method,
+            query: (0, helpers_1.pick)(args, api_endpoints_1.search.queryParams),
+            body: (0, helpers_1.pick)(args, api_endpoints_1.search.bodyParams),
+            auth: args === null || args === void 0 ? void 0 : args.auth,
+        });
+    }
+    /**
+     * Emits a log message to the console.
+     *
+     * @param level The level for this message
+     * @param args Arguments to send to the console
+     */
+    log(level, message, extraInfo) {
+        if ((0, logging_1.logLevelSeverity)(level) >= (0, logging_1.logLevelSeverity)(__classPrivateFieldGet(this, _Client_logLevel, "f"))) {
+            __classPrivateFieldGet(this, _Client_logger, "f").call(this, level, message, extraInfo);
+        }
+    }
+    /**
+     * Transforms an API key or access token into a headers object suitable for an HTTP request.
+     *
+     * This method uses the instance's value as the default when the input is undefined. If neither are defined, it returns
+     * an empty object
+     *
+     * @param auth API key or access token
+     * @returns headers key-value object
+     */
+    authAsHeaders(auth) {
+        const headers = {};
+        const authHeaderValue = auth !== null && auth !== void 0 ? auth : __classPrivateFieldGet(this, _Client_auth, "f");
+        if (authHeaderValue !== undefined) {
+            headers["authorization"] = `Bearer ${authHeaderValue}`;
+        }
+        return headers;
+    }
+}
+exports.default = Client;
+_Client_auth = new WeakMap(), _Client_logLevel = new WeakMap(), _Client_logger = new WeakMap(), _Client_prefixUrl = new WeakMap(), _Client_timeoutMs = new WeakMap(), _Client_notionVersion = new WeakMap(), _Client_fetch = new WeakMap(), _Client_agent = new WeakMap(), _Client_userAgent = new WeakMap();
+Client.defaultNotionVersion = "2021-08-16";
+//# sourceMappingURL=Client.js.map
+
+/***/ }),
+
+/***/ 6009:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// cspell:disable-file
+// Note: This is a generated file.
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.search = exports.createDatabase = exports.listDatabases = exports.queryDatabase = exports.updateDatabase = exports.getDatabase = exports.appendBlockChildren = exports.listBlockChildren = exports.deleteBlock = exports.updateBlock = exports.getBlock = exports.getPageProperty = exports.updatePage = exports.getPage = exports.createPage = exports.listUsers = exports.getUser = exports.getSelf = void 0;
+exports.getSelf = {
+    method: "get",
+    pathParams: [],
+    queryParams: [],
+    bodyParams: [],
+    path: () => `users/me`,
+};
+exports.getUser = {
+    method: "get",
+    pathParams: ["user_id"],
+    queryParams: [],
+    bodyParams: [],
+    path: (p) => `users/${p.user_id}`,
+};
+exports.listUsers = {
+    method: "get",
+    pathParams: [],
+    queryParams: ["start_cursor", "page_size"],
+    bodyParams: [],
+    path: () => `users`,
+};
+exports.createPage = {
+    method: "post",
+    pathParams: [],
+    queryParams: [],
+    bodyParams: ["parent", "properties", "icon", "cover", "content", "children"],
+    path: () => `pages`,
+};
+exports.getPage = {
+    method: "get",
+    pathParams: ["page_id"],
+    queryParams: [],
+    bodyParams: [],
+    path: (p) => `pages/${p.page_id}`,
+};
+exports.updatePage = {
+    method: "patch",
+    pathParams: ["page_id"],
+    queryParams: [],
+    bodyParams: ["properties", "icon", "cover", "archived"],
+    path: (p) => `pages/${p.page_id}`,
+};
+exports.getPageProperty = {
+    method: "get",
+    pathParams: ["page_id", "property_id"],
+    queryParams: ["start_cursor", "page_size"],
+    bodyParams: [],
+    path: (p) => `pages/${p.page_id}/properties/${p.property_id}`,
+};
+exports.getBlock = {
+    method: "get",
+    pathParams: ["block_id"],
+    queryParams: [],
+    bodyParams: [],
+    path: (p) => `blocks/${p.block_id}`,
+};
+exports.updateBlock = {
+    method: "patch",
+    pathParams: ["block_id"],
+    queryParams: [],
+    bodyParams: [
+        "heading_1",
+        "type",
+        "archived",
+        "heading_2",
+        "heading_3",
+        "embed",
+        "bookmark",
+        "image",
+        "video",
+        "pdf",
+        "file",
+        "audio",
+        "code",
+        "equation",
+        "divider",
+        "breadcrumb",
+        "table_of_contents",
+        "paragraph",
+        "bulleted_list_item",
+        "numbered_list_item",
+        "quote",
+        "to_do",
+        "toggle",
+        "callout",
+    ],
+    path: (p) => `blocks/${p.block_id}`,
+};
+exports.deleteBlock = {
+    method: "delete",
+    pathParams: ["block_id"],
+    queryParams: [],
+    bodyParams: [],
+    path: (p) => `blocks/${p.block_id}`,
+};
+exports.listBlockChildren = {
+    method: "get",
+    pathParams: ["block_id"],
+    queryParams: ["start_cursor", "page_size"],
+    bodyParams: [],
+    path: (p) => `blocks/${p.block_id}/children`,
+};
+exports.appendBlockChildren = {
+    method: "patch",
+    pathParams: ["block_id"],
+    queryParams: [],
+    bodyParams: ["children"],
+    path: (p) => `blocks/${p.block_id}/children`,
+};
+exports.getDatabase = {
+    method: "get",
+    pathParams: ["database_id"],
+    queryParams: [],
+    bodyParams: [],
+    path: (p) => `databases/${p.database_id}`,
+};
+exports.updateDatabase = {
+    method: "patch",
+    pathParams: ["database_id"],
+    queryParams: [],
+    bodyParams: ["title", "icon", "cover", "properties"],
+    path: (p) => `databases/${p.database_id}`,
+};
+exports.queryDatabase = {
+    method: "post",
+    pathParams: ["database_id"],
+    queryParams: [],
+    bodyParams: ["sorts", "filter", "start_cursor", "page_size", "archived"],
+    path: (p) => `databases/${p.database_id}/query`,
+};
+exports.listDatabases = {
+    method: "get",
+    pathParams: [],
+    queryParams: ["start_cursor", "page_size"],
+    bodyParams: [],
+    path: () => `databases`,
+};
+exports.createDatabase = {
+    method: "post",
+    pathParams: [],
+    queryParams: [],
+    bodyParams: ["parent", "properties", "icon", "cover", "title"],
+    path: () => `databases`,
+};
+exports.search = {
+    method: "post",
+    pathParams: [],
+    queryParams: [],
+    bodyParams: ["sort", "query", "start_cursor", "page_size", "filter"],
+    path: () => `search`,
+};
+//# sourceMappingURL=api-endpoints.js.map
+
+/***/ }),
+
+/***/ 7505:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.buildRequestError = exports.APIResponseError = exports.UnknownHTTPResponseError = exports.isHTTPResponseError = exports.RequestTimeoutError = exports.isNotionClientError = exports.ClientErrorCode = exports.APIErrorCode = void 0;
+const helpers_1 = __nccwpck_require__(402);
+/**
+ * Error codes returned in responses from the API.
+ */
+var APIErrorCode;
+(function (APIErrorCode) {
+    APIErrorCode["Unauthorized"] = "unauthorized";
+    APIErrorCode["RestrictedResource"] = "restricted_resource";
+    APIErrorCode["ObjectNotFound"] = "object_not_found";
+    APIErrorCode["RateLimited"] = "rate_limited";
+    APIErrorCode["InvalidJSON"] = "invalid_json";
+    APIErrorCode["InvalidRequestURL"] = "invalid_request_url";
+    APIErrorCode["InvalidRequest"] = "invalid_request";
+    APIErrorCode["ValidationError"] = "validation_error";
+    APIErrorCode["ConflictError"] = "conflict_error";
+    APIErrorCode["InternalServerError"] = "internal_server_error";
+    APIErrorCode["ServiceUnavailable"] = "service_unavailable";
+})(APIErrorCode = exports.APIErrorCode || (exports.APIErrorCode = {}));
+/**
+ * Error codes generated for client errors.
+ */
+var ClientErrorCode;
+(function (ClientErrorCode) {
+    ClientErrorCode["RequestTimeout"] = "notionhq_client_request_timeout";
+    ClientErrorCode["ResponseError"] = "notionhq_client_response_error";
+})(ClientErrorCode = exports.ClientErrorCode || (exports.ClientErrorCode = {}));
+/**
+ * Base error type.
+ */
+class NotionClientErrorBase extends Error {
+}
+/**
+ * @param error any value, usually a caught error.
+ * @returns `true` if error is a `NotionClientError`.
+ */
+function isNotionClientError(error) {
+    return (0, helpers_1.isObject)(error) && error instanceof NotionClientErrorBase;
+}
+exports.isNotionClientError = isNotionClientError;
+/**
+ * Narrows down the types of a NotionClientError.
+ * @param error any value, usually a caught error.
+ * @param codes an object mapping from possible error codes to `true`
+ * @returns `true` if error is a `NotionClientError` with a code in `codes`.
+ */
+function isNotionClientErrorWithCode(error, codes) {
+    return isNotionClientError(error) && error.code in codes;
+}
+/**
+ * Error thrown by the client if a request times out.
+ */
+class RequestTimeoutError extends NotionClientErrorBase {
+    constructor(message = "Request to Notion API has timed out") {
+        super(message);
+        this.code = ClientErrorCode.RequestTimeout;
+        this.name = "RequestTimeoutError";
+    }
+    static isRequestTimeoutError(error) {
+        return isNotionClientErrorWithCode(error, {
+            [ClientErrorCode.RequestTimeout]: true,
+        });
+    }
+    static rejectAfterTimeout(promise, timeoutMS) {
+        return new Promise((resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                reject(new RequestTimeoutError());
+            }, timeoutMS);
+            promise
+                .then(resolve)
+                .catch(reject)
+                .then(() => clearTimeout(timeoutId));
+        });
+    }
+}
+exports.RequestTimeoutError = RequestTimeoutError;
+class HTTPResponseError extends NotionClientErrorBase {
+    constructor(args) {
+        super(args.message);
+        this.name = "HTTPResponseError";
+        const { code, status, headers, rawBodyText } = args;
+        this.code = code;
+        this.status = status;
+        this.headers = headers;
+        this.body = rawBodyText;
+    }
+}
+const httpResponseErrorCodes = {
+    [ClientErrorCode.ResponseError]: true,
+    [APIErrorCode.Unauthorized]: true,
+    [APIErrorCode.RestrictedResource]: true,
+    [APIErrorCode.ObjectNotFound]: true,
+    [APIErrorCode.RateLimited]: true,
+    [APIErrorCode.InvalidJSON]: true,
+    [APIErrorCode.InvalidRequestURL]: true,
+    [APIErrorCode.InvalidRequest]: true,
+    [APIErrorCode.ValidationError]: true,
+    [APIErrorCode.ConflictError]: true,
+    [APIErrorCode.InternalServerError]: true,
+    [APIErrorCode.ServiceUnavailable]: true,
+};
+function isHTTPResponseError(error) {
+    if (!isNotionClientErrorWithCode(error, httpResponseErrorCodes)) {
+        return false;
+    }
+    return true;
+}
+exports.isHTTPResponseError = isHTTPResponseError;
+/**
+ * Error thrown if an API call responds with an unknown error code, or does not respond with
+ * a property-formatted error.
+ */
+class UnknownHTTPResponseError extends HTTPResponseError {
+    constructor(args) {
+        var _a;
+        super({
+            ...args,
+            code: ClientErrorCode.ResponseError,
+            message: (_a = args.message) !== null && _a !== void 0 ? _a : `Request to Notion API failed with status: ${args.status}`,
+        });
+        this.name = "UnknownHTTPResponseError";
+    }
+    static isUnknownHTTPResponseError(error) {
+        return isNotionClientErrorWithCode(error, {
+            [ClientErrorCode.ResponseError]: true,
+        });
+    }
+}
+exports.UnknownHTTPResponseError = UnknownHTTPResponseError;
+const apiErrorCodes = {
+    [APIErrorCode.Unauthorized]: true,
+    [APIErrorCode.RestrictedResource]: true,
+    [APIErrorCode.ObjectNotFound]: true,
+    [APIErrorCode.RateLimited]: true,
+    [APIErrorCode.InvalidJSON]: true,
+    [APIErrorCode.InvalidRequestURL]: true,
+    [APIErrorCode.InvalidRequest]: true,
+    [APIErrorCode.ValidationError]: true,
+    [APIErrorCode.ConflictError]: true,
+    [APIErrorCode.InternalServerError]: true,
+    [APIErrorCode.ServiceUnavailable]: true,
+};
+/**
+ * A response from the API indicating a problem.
+ * Use the `code` property to handle various kinds of errors. All its possible values are in `APIErrorCode`.
+ */
+class APIResponseError extends HTTPResponseError {
+    constructor() {
+        super(...arguments);
+        this.name = "APIResponseError";
+    }
+    static isAPIResponseError(error) {
+        return isNotionClientErrorWithCode(error, apiErrorCodes);
+    }
+}
+exports.APIResponseError = APIResponseError;
+function buildRequestError(response, bodyText) {
+    const apiErrorResponseBody = parseAPIErrorResponseBody(bodyText);
+    if (apiErrorResponseBody !== undefined) {
+        return new APIResponseError({
+            code: apiErrorResponseBody.code,
+            message: apiErrorResponseBody.message,
+            headers: response.headers,
+            status: response.status,
+            rawBodyText: bodyText,
+        });
+    }
+    return new UnknownHTTPResponseError({
+        message: undefined,
+        headers: response.headers,
+        status: response.status,
+        rawBodyText: bodyText,
+    });
+}
+exports.buildRequestError = buildRequestError;
+function parseAPIErrorResponseBody(body) {
+    if (typeof body !== "string") {
+        return;
+    }
+    let parsed;
+    try {
+        parsed = JSON.parse(body);
+    }
+    catch (parseError) {
+        return;
+    }
+    if (!(0, helpers_1.isObject)(parsed) ||
+        typeof parsed["message"] !== "string" ||
+        !isAPIErrorCode(parsed["code"])) {
+        return;
+    }
+    return {
+        ...parsed,
+        code: parsed["code"],
+        message: parsed["message"],
+    };
+}
+function isAPIErrorCode(code) {
+    return typeof code === "string" && code in apiErrorCodes;
+}
+//# sourceMappingURL=errors.js.map
+
+/***/ }),
+
+/***/ 402:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isObject = exports.pick = exports.assertNever = void 0;
+/**
+ * Utility for enforcing exhaustiveness checks in the type system.
+ *
+ * @see https://basarat.gitbook.io/typescript/type-system/discriminated-unions#throw-in-exhaustive-checks
+ *
+ * @param value The variable with no remaining values
+ */
+function assertNever(value) {
+    throw new Error(`Unexpected value should never occur: ${value}`);
+}
+exports.assertNever = assertNever;
+function pick(base, keys) {
+    const entries = keys.map(key => [key, base === null || base === void 0 ? void 0 : base[key]]);
+    return Object.fromEntries(entries);
+}
+exports.pick = pick;
+function isObject(o) {
+    return typeof o === "object" && o !== null;
+}
+exports.isObject = isObject;
+//# sourceMappingURL=helpers.js.map
+
+/***/ }),
+
+/***/ 8073:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isNotionClientError = exports.RequestTimeoutError = exports.UnknownHTTPResponseError = exports.APIResponseError = exports.ClientErrorCode = exports.APIErrorCode = exports.LogLevel = exports.Client = void 0;
+var Client_1 = __nccwpck_require__(3038);
+Object.defineProperty(exports, "Client", ({ enumerable: true, get: function () { return Client_1.default; } }));
+var logging_1 = __nccwpck_require__(2177);
+Object.defineProperty(exports, "LogLevel", ({ enumerable: true, get: function () { return logging_1.LogLevel; } }));
+var errors_1 = __nccwpck_require__(7505);
+Object.defineProperty(exports, "APIErrorCode", ({ enumerable: true, get: function () { return errors_1.APIErrorCode; } }));
+Object.defineProperty(exports, "ClientErrorCode", ({ enumerable: true, get: function () { return errors_1.ClientErrorCode; } }));
+Object.defineProperty(exports, "APIResponseError", ({ enumerable: true, get: function () { return errors_1.APIResponseError; } }));
+Object.defineProperty(exports, "UnknownHTTPResponseError", ({ enumerable: true, get: function () { return errors_1.UnknownHTTPResponseError; } }));
+Object.defineProperty(exports, "RequestTimeoutError", ({ enumerable: true, get: function () { return errors_1.RequestTimeoutError; } }));
+// Error helpers
+Object.defineProperty(exports, "isNotionClientError", ({ enumerable: true, get: function () { return errors_1.isNotionClientError; } }));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 2177:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.logLevelSeverity = exports.makeConsoleLogger = exports.LogLevel = void 0;
+const helpers_1 = __nccwpck_require__(402);
+var LogLevel;
+(function (LogLevel) {
+    LogLevel["DEBUG"] = "debug";
+    LogLevel["INFO"] = "info";
+    LogLevel["WARN"] = "warn";
+    LogLevel["ERROR"] = "error";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+function makeConsoleLogger(name) {
+    return (level, message, extraInfo) => {
+        console[level](`${name} ${level}:`, message, extraInfo);
+    };
+}
+exports.makeConsoleLogger = makeConsoleLogger;
+/**
+ * Transforms a log level into a comparable (numerical) value ordered by severity.
+ */
+function logLevelSeverity(level) {
+    switch (level) {
+        case LogLevel.DEBUG:
+            return 20;
+        case LogLevel.INFO:
+            return 40;
+        case LogLevel.WARN:
+            return 60;
+        case LogLevel.ERROR:
+            return 80;
+        default:
+            return (0, helpers_1.assertNever)(level);
+    }
+}
+exports.logLevelSeverity = logLevelSeverity;
+//# sourceMappingURL=logging.js.map
+
+/***/ }),
+
+/***/ 4879:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1273,7 +2160,7 @@ exports.createTokenAuth = createTokenAuth;
 
 /***/ }),
 
-/***/ 706:
+/***/ 622:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -1281,11 +2168,11 @@ exports.createTokenAuth = createTokenAuth;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var universalUserAgent = __nccwpck_require__(212);
-var beforeAfterHook = __nccwpck_require__(333);
-var request = __nccwpck_require__(681);
+var universalUserAgent = __nccwpck_require__(1212);
+var beforeAfterHook = __nccwpck_require__(4333);
+var request = __nccwpck_require__(9681);
 var graphql = __nccwpck_require__(178);
-var authToken = __nccwpck_require__(859);
+var authToken = __nccwpck_require__(4879);
 
 function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
@@ -1456,7 +2343,7 @@ exports.Octokit = Octokit;
 
 /***/ }),
 
-/***/ 963:
+/***/ 5963:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -1464,8 +2351,8 @@ exports.Octokit = Octokit;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var isPlainObject = __nccwpck_require__(694);
-var universalUserAgent = __nccwpck_require__(212);
+var isPlainObject = __nccwpck_require__(6694);
+var universalUserAgent = __nccwpck_require__(1212);
 
 function lowercaseKeys(object) {
   if (!object) {
@@ -1862,8 +2749,8 @@ exports.endpoint = endpoint;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-var request = __nccwpck_require__(681);
-var universalUserAgent = __nccwpck_require__(212);
+var request = __nccwpck_require__(9681);
+var universalUserAgent = __nccwpck_require__(1212);
 
 const VERSION = "4.6.1";
 
@@ -1978,7 +2865,7 @@ exports.withCustomRequest = withCustomRequest;
 
 /***/ }),
 
-/***/ 176:
+/***/ 6176:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -2130,7 +3017,7 @@ exports.paginatingEndpoints = paginatingEndpoints;
 
 /***/ }),
 
-/***/ 145:
+/***/ 5145:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3367,7 +4254,7 @@ exports.restEndpointMethods = restEndpointMethods;
 
 /***/ }),
 
-/***/ 664:
+/***/ 5664:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3377,8 +4264,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var deprecation = __nccwpck_require__(520);
-var once = _interopDefault(__nccwpck_require__(733));
+var deprecation = __nccwpck_require__(7520);
+var once = _interopDefault(__nccwpck_require__(4733));
 
 const logOnce = once(deprecation => console.warn(deprecation));
 /**
@@ -3430,7 +4317,7 @@ exports.RequestError = RequestError;
 
 /***/ }),
 
-/***/ 681:
+/***/ 9681:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3440,11 +4327,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var endpoint = __nccwpck_require__(963);
-var universalUserAgent = __nccwpck_require__(212);
-var isPlainObject = __nccwpck_require__(694);
-var nodeFetch = _interopDefault(__nccwpck_require__(771));
-var requestError = __nccwpck_require__(664);
+var endpoint = __nccwpck_require__(5963);
+var universalUserAgent = __nccwpck_require__(1212);
+var isPlainObject = __nccwpck_require__(6694);
+var nodeFetch = _interopDefault(__nccwpck_require__(5771));
+var requestError = __nccwpck_require__(5664);
 
 const VERSION = "5.4.15";
 
@@ -3588,12 +4475,12 @@ exports.request = request;
 
 /***/ }),
 
-/***/ 333:
+/***/ 4333:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var register = __nccwpck_require__(408)
-var addHook = __nccwpck_require__(555)
-var removeHook = __nccwpck_require__(369)
+var register = __nccwpck_require__(7408)
+var addHook = __nccwpck_require__(2555)
+var removeHook = __nccwpck_require__(9369)
 
 // bind with array of arguments: https://stackoverflow.com/a/21792913
 var bind = Function.bind
@@ -3652,7 +4539,7 @@ module.exports.Collection = Hook.Collection
 
 /***/ }),
 
-/***/ 555:
+/***/ 2555:
 /***/ ((module) => {
 
 module.exports = addHook;
@@ -3705,7 +4592,7 @@ function addHook(state, kind, name, hook) {
 
 /***/ }),
 
-/***/ 408:
+/***/ 7408:
 /***/ ((module) => {
 
 module.exports = register;
@@ -3739,7 +4626,7 @@ function register(state, name, method, options) {
 
 /***/ }),
 
-/***/ 369:
+/***/ 9369:
 /***/ ((module) => {
 
 module.exports = removeHook;
@@ -3765,7 +4652,7 @@ function removeHook(state, name, method) {
 
 /***/ }),
 
-/***/ 520:
+/***/ 7520:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3793,7 +4680,7 @@ exports.Deprecation = Deprecation;
 
 /***/ }),
 
-/***/ 694:
+/***/ 6694:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -3839,7 +4726,7 @@ exports.isPlainObject = isPlainObject;
 
 /***/ }),
 
-/***/ 771:
+/***/ 5771:
 /***/ ((module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -3849,11 +4736,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Stream = _interopDefault(__nccwpck_require__(413));
-var http = _interopDefault(__nccwpck_require__(605));
-var Url = _interopDefault(__nccwpck_require__(835));
-var https = _interopDefault(__nccwpck_require__(211));
-var zlib = _interopDefault(__nccwpck_require__(761));
+var Stream = _interopDefault(__nccwpck_require__(2413));
+var http = _interopDefault(__nccwpck_require__(8605));
+var Url = _interopDefault(__nccwpck_require__(8835));
+var https = _interopDefault(__nccwpck_require__(7211));
+var zlib = _interopDefault(__nccwpck_require__(8761));
 
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
 
@@ -4004,7 +4891,7 @@ FetchError.prototype.name = 'FetchError';
 
 let convert;
 try {
-	convert = __nccwpck_require__(226).convert;
+	convert = __nccwpck_require__(2226).convert;
 } catch (e) {}
 
 const INTERNALS = Symbol('Body internals');
@@ -5496,10 +6383,10 @@ exports.FetchError = FetchError;
 
 /***/ }),
 
-/***/ 733:
+/***/ 4733:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var wrappy = __nccwpck_require__(325)
+var wrappy = __nccwpck_require__(5325)
 module.exports = wrappy(once)
 module.exports.strict = wrappy(onceStrict)
 
@@ -5545,27 +6432,27 @@ function onceStrict (fn) {
 
 /***/ }),
 
-/***/ 991:
+/***/ 2991:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-module.exports = __nccwpck_require__(323);
+module.exports = __nccwpck_require__(1323);
 
 
 /***/ }),
 
-/***/ 323:
+/***/ 1323:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var net = __nccwpck_require__(631);
-var tls = __nccwpck_require__(16);
-var http = __nccwpck_require__(605);
-var https = __nccwpck_require__(211);
-var events = __nccwpck_require__(614);
-var assert = __nccwpck_require__(357);
-var util = __nccwpck_require__(669);
+var net = __nccwpck_require__(1631);
+var tls = __nccwpck_require__(4016);
+var http = __nccwpck_require__(8605);
+var https = __nccwpck_require__(7211);
+var events = __nccwpck_require__(8614);
+var assert = __nccwpck_require__(2357);
+var util = __nccwpck_require__(1669);
 
 
 exports.httpOverHttp = httpOverHttp;
@@ -5825,7 +6712,7 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 212:
+/***/ 1212:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -5851,7 +6738,7 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
-/***/ 325:
+/***/ 5325:
 /***/ ((module) => {
 
 // Returns a wrapper function that returns a wrapped callback
@@ -5891,7 +6778,7 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 226:
+/***/ 2226:
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
@@ -5899,7 +6786,15 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
-/***/ 357:
+/***/ 3749:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"name":"@notionhq/client","version":"0.4.4","description":"A simple and easy to use client for the Notion API","engines":{"node":">=12"},"homepage":"https://developers.notion.com/docs/getting-started","bugs":{"url":"https://github.com/makenotion/notion-sdk-js/issues"},"repository":{"type":"git","url":"https://github.com/makenotion/notion-sdk-js/"},"keywords":["notion","notionapi","rest","notion-api"],"main":"./build/src","scripts":{"prepare":"npm run build","prepublishOnly":"npm run lint && npm run test","build":"tsc","prettier":"prettier --write .","lint":"prettier --check . && eslint . --ext .ts && cspell \'**/*\' ","test":"ava","check-links":"git ls-files | grep md$ | xargs -n 1 markdown-link-check","prebuild":"npm run clean","clean":"rm -rf ./build"},"author":"","license":"MIT","files":["build/package.json","build/src/**"],"dependencies":{"@types/node-fetch":"^2.5.10","node-fetch":"^2.6.1"},"devDependencies":{"@ava/typescript":"^2.0.0","@typescript-eslint/eslint-plugin":"^4.22.0","@typescript-eslint/parser":"^4.22.0","ava":"^3.15.0","cspell":"^5.4.1","eslint":"^7.24.0","markdown-link-check":"^3.8.7","prettier":"^2.3.0","typescript":"^4.2.4"}}');
+
+/***/ }),
+
+/***/ 2357:
 /***/ ((module) => {
 
 "use strict";
@@ -5907,7 +6802,7 @@ module.exports = require("assert");;
 
 /***/ }),
 
-/***/ 614:
+/***/ 8614:
 /***/ ((module) => {
 
 "use strict";
@@ -5915,7 +6810,7 @@ module.exports = require("events");;
 
 /***/ }),
 
-/***/ 747:
+/***/ 5747:
 /***/ ((module) => {
 
 "use strict";
@@ -5923,7 +6818,7 @@ module.exports = require("fs");;
 
 /***/ }),
 
-/***/ 605:
+/***/ 8605:
 /***/ ((module) => {
 
 "use strict";
@@ -5931,7 +6826,7 @@ module.exports = require("http");;
 
 /***/ }),
 
-/***/ 211:
+/***/ 7211:
 /***/ ((module) => {
 
 "use strict";
@@ -5939,7 +6834,7 @@ module.exports = require("https");;
 
 /***/ }),
 
-/***/ 631:
+/***/ 1631:
 /***/ ((module) => {
 
 "use strict";
@@ -5947,7 +6842,7 @@ module.exports = require("net");;
 
 /***/ }),
 
-/***/ 87:
+/***/ 2087:
 /***/ ((module) => {
 
 "use strict";
@@ -5955,7 +6850,7 @@ module.exports = require("os");;
 
 /***/ }),
 
-/***/ 622:
+/***/ 5622:
 /***/ ((module) => {
 
 "use strict";
@@ -5963,7 +6858,7 @@ module.exports = require("path");;
 
 /***/ }),
 
-/***/ 413:
+/***/ 2413:
 /***/ ((module) => {
 
 "use strict";
@@ -5971,7 +6866,7 @@ module.exports = require("stream");;
 
 /***/ }),
 
-/***/ 16:
+/***/ 4016:
 /***/ ((module) => {
 
 "use strict";
@@ -5979,7 +6874,7 @@ module.exports = require("tls");;
 
 /***/ }),
 
-/***/ 835:
+/***/ 8835:
 /***/ ((module) => {
 
 "use strict";
@@ -5987,7 +6882,7 @@ module.exports = require("url");;
 
 /***/ }),
 
-/***/ 669:
+/***/ 1669:
 /***/ ((module) => {
 
 "use strict";
@@ -5995,7 +6890,7 @@ module.exports = require("util");;
 
 /***/ }),
 
-/***/ 761:
+/***/ 8761:
 /***/ ((module) => {
 
 "use strict";
@@ -6040,74 +6935,47 @@ module.exports = require("zlib");;
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
+
 var _a;
-const core = __nccwpck_require__(151);
-const github = __nccwpck_require__(860);
-const fetch = __nccwpck_require__(771);
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
-}
-const pullRequest = github.context.payload.pull_request;
-const PRBody = pullRequest.body;
-const PRHref = pullRequest.html_url;
-const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
-const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
-const urlRegex = "(https)://([\\w_-]+(?:(?:.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
-const enhancedRegex = `${requiredPrefix}${urlRegex}${requiredSuffix}`;
-const urls = (_a = PRBody.match(enhancedRegex)) !== null && _a !== void 0 ? _a : [];
+const core = __nccwpck_require__(8151);
+const github = __nccwpck_require__(2860);
+const { Client } = __nccwpck_require__(8073);
+const { extractParams } = __nccwpck_require__(9178);
+const URL_REGEX = "(https)://([\\w_-]+(?:(?:.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?";
+const params = extractParams();
+const enhancedRegex = `${params.prefix}${URL_REGEX}${params.suffix}`;
+const urls = (_a = params.pullRequest.body.match(enhancedRegex)) !== null && _a !== void 0 ? _a : [];
 const urlFound = urls.find((url) => url.match("notion.so"));
-const status = core.getInput(github.context.payload.action, {
-    required: false,
-});
-const githubUrlProperty = core.getInput("github-url-property-name", { required: false }) ||
-    "Github Url";
-const statusProperty = core.getInput("status-property-name", { required: false }) || "Status";
 if (urlFound) {
-    const notionUrl = urlFound
-        .match(urlRegex)
-        .find((url) => url.match("notion.so"));
-    const urlParts = notionUrl.split("/");
-    const taskName = urlParts[urlParts.length - 1];
+    const notionUrlParts = urlFound
+        .match(URL_REGEX)
+        .find((url) => url.match("notion.so"))
+        .split("/");
+    const taskName = notionUrlParts[notionUrlParts.length - 1];
     const taskParts = taskName.split("-");
     const pageId = taskParts[taskParts.length - 1];
-    fetch(`https://api.notion.com/v1/pages/${pageId}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NOTION_BOT_SECRET_KEY}`,
-        },
-        body: JSON.stringify({
-            properties: {
-                ...(status
-                    ? {
-                        [statusProperty]: {
-                            name: status,
-                        },
-                    }
-                    : {}),
-                [githubUrlProperty]: PRHref,
-            },
-        }),
-    })
-        .then((res) => {
-        if (!res.ok) {
-            res
-                .json()
-                .then((json) => {
-                core.setFailed(json);
-            })
-                .catch(() => core.setFailed("Error while parsing Notion response"));
+    const notion = new Client({
+        auth: process.env.NOTION_BOT_SECRET_KEY
+    });
+    notion.pages.update({
+        page_id: pageId,
+        properties: {
+            ...(params.pullRequest.status ? {
+                [params.notionProperties.status]: {
+                    name: params.pullRequest.status,
+                },
+            } : {}),
+            [params.notionProperties.githubUrl]: params.pullRequest.href,
         }
-        if (!status) {
+    }).then(() => {
+        if (!params.pullRequest.status) {
             core.info(`The status ${github.context.payload.action} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
         }
         core.info("Notion task updated!");
-    })
-        .catch((error) => {
-        core.setFailed(error);
-    });
+    }).catch((err) => { core.setFailed(err); });
 }
 else {
     core.warning("No notion task found in the PR body.");
