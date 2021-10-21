@@ -21,6 +21,12 @@ inputs:
       description: 'Suffix string required just after the Notion link'
       required: false
       default: ''
+  draft:
+      description: 'Value of the status to put on the Notion Page when the PR state is `draft`'
+      required: false
+  merged:
+      description: 'Value of the status to put on the Notion Page when the PR state is `merged`'
+      required: false
   assigned:
       description: 'Value of the status to put on the Notion Page when the PR action is `assigned`'
       required: false

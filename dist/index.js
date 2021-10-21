@@ -12,16 +12,23 @@ function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 function extractGithubParams() {
+    var _a, _b, _c;
     const pullRequest = github.context.payload.pull_request;
     const requiredPrefix = escapeRegExp(core.getInput("required-prefix", { required: false }) || "");
     const requiredSuffix = escapeRegExp(core.getInput("required-suffix", { required: false }) || "");
-    const status = core.getInput(github.context.payload.action, { required: false });
+    const isDraft = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.draft;
+    const isMerged = (_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.merged;
+    const statusKey = isMerged ? 'merged' : isDraft ? 'draft' : github.context.payload.action;
+    const status = core.getInput(statusKey, { required: false });
     const githubUrlProperty = core.getInput("github-url-property-name", { required: false }) ||
         "Github Url";
     const statusProperty = core.getInput("status-property-name", { required: false }) || "Status";
     return {
+        metadata: {
+            statusKey: statusKey
+        },
         pullRequest: {
-            body: pullRequest.body,
+            body: (_c = pullRequest.body) !== null && _c !== void 0 ? _c : '',
             href: pullRequest.html_url,
             status: status
         },
@@ -6972,7 +6979,7 @@ if (urlFound) {
         }
     }).then(() => {
         if (!params.pullRequest.status) {
-            core.info(`The status ${github.context.payload.action} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
+            core.info(`The status ${params.metadata.statusKey} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
         }
         core.info("Notion task updated!");
     }).catch((err) => { core.setFailed(err); });

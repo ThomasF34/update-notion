@@ -16,7 +16,10 @@ function extractGithubParams() {
     core.getInput("required-suffix", { required: false }) || ""
   );
 
-  const status = core.getInput(github.context.payload.action, { required: false });
+  const isDraft = github.context.payload.pull_request?.draft
+  const isMerged = github.context.payload.pull_request?.merged
+  const statusKey = isMerged ? 'merged' : isDraft ? 'draft' : github.context.payload.action
+  const status = core.getInput(statusKey, { required: false });
 
   const githubUrlProperty = core.getInput("github-url-property-name", { required: false }) ||
     "Github Url";
@@ -24,8 +27,11 @@ function extractGithubParams() {
   const statusProperty = core.getInput("status-property-name", { required: false }) || "Status";
 
   return {
+    metadata: {
+      statusKey: statusKey
+    },
     pullRequest: {
-      body: pullRequest.body,
+      body: pullRequest.body ?? '',
       href: pullRequest.html_url,
       status: status
     },

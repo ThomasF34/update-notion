@@ -32,7 +32,7 @@ if (urlFound) {
         }
     }).then(() => {
         if (!params.pullRequest.status) {
-            core.info(`The status ${github.context.payload.action} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
+            core.info(`The status ${params.metadata.statusKey} is not mapped with a value in the action definition. Hence, the task update body does not contain a status update`);
         }
         core.info("Notion task updated!");
     }).catch((err) => { core.setFailed(err); });
