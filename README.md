@@ -7,7 +7,7 @@
 Name of the status property that will receive a new tag based on the triggered
 action
 
-### `url-property-name`
+### `github-url-property-name`
 
 Name of the url property that will receive the url of the PR
 
@@ -36,7 +36,7 @@ with:
     - required-suffix: ')'
     - required-prefix: '[Notion ticket]('
     - status-property-name: 'Status'
-    - url-property-name: 'Github URL'
+    - github-url-property-name: 'Github URL'
     - opened: 'In progresss'
     - edited: 'In progress'
     - closed: 'Done'
