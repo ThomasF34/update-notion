@@ -8,7 +8,6 @@ const URL_REGEX = "(https)://([\\w_-]+(?:(?:.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\
 const params = extractParams();
 const enhancedRegex = `${params.prefix}${URL_REGEX}${params.suffix}`;
 const urls = (_a = params.pullRequest.body.match(enhancedRegex)) !== null && _a !== void 0 ? _a : [];
-core.info(JSON.stringify(params.pullRequest.body, null, 2));
 const urlFound = urls.find((url) => url.match("notion.so"));
 if (urlFound) {
     const notionUrlParts = urlFound
@@ -24,7 +23,6 @@ if (urlFound) {
     })
         .find((url) => url.match("notion.so"))
         .split("/");
-    core.info(JSON.stringify(notionUrlParts, null, 2));
     const taskName = notionUrlParts[notionUrlParts.length - 1];
     const taskParts = taskName.split("-");
     const pageId = taskParts[taskParts.length - 1];
