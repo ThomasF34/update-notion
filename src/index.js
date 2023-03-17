@@ -12,7 +12,6 @@ const params = extractParams()
 const enhancedRegex = `${params.prefix}${URL_REGEX}${params.suffix}`
 
 const urls = params.pullRequest.body.match(enhancedRegex) ?? []
-core.info(JSON.stringify(params.pullRequest.body, null, 2))
 const urlFound = urls.find((url) => url.match("notion.so"))
 
 if (urlFound) {
@@ -28,7 +27,6 @@ if (urlFound) {
     })
     .find((url) => url.match("notion.so"))
     .split("/")
-  core.info(JSON.stringify(notionUrlParts, null, 2))
   const taskName = notionUrlParts[notionUrlParts.length - 1]
   const taskParts = taskName.split("-")
   const pageId = taskParts[taskParts.length - 1]
