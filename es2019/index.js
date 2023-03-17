@@ -29,8 +29,6 @@ if (urlFound) {
     const notion = new Client({
         auth: process.env.NOTION_BOT_SECRET_KEY,
     });
-    core.info("merged at");
-    core.info(params.notionProperties.mergedAt);
     notion.pages
         .update({
         page_id: pageId,
