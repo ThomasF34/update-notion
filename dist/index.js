@@ -11483,9 +11483,13 @@ if (urlFound) {
                 }
                 : {}),
             [params.notionProperties.githubUrl]: params.pullRequest.href,
-            "PR merged time": {
-                start: params.isMerged ? params.notionProperties.mergedAt : null,
-            },
+            ...(params.isMerged
+                ? {
+                    "PR merged time": {
+                        start: params.notionProperties.mergedAt,
+                    },
+                }
+                : {}),
         },
     })
         .then(() => {
