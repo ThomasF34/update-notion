@@ -16,6 +16,14 @@ const urlFound = urls.find((url) => url.match("notion.so"));
 if (urlFound) {
   const notionUrlParts = urlFound
     .match(URL_REGEX)
+    .map((url) => {
+      try {
+        const u = new URL(url)
+        return `${u.origin}${u.pathname}`
+      } catch (error) {
+        return url
+      }
+    })
     .find((url) => url.match("notion.so"))
     .split("/");
 
