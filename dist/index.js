@@ -43,7 +43,7 @@ function extractGithubParams() {
         notionProperties: {
             githubUrl: githubUrlProperty,
             status: statusProperty,
-            mergedAt: dayjs().format("YYYY-MM-DD"),
+            mergedAt: dayjs().format(),
         },
     };
 }
