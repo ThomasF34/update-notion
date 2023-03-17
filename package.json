@@ -13,6 +13,7 @@
     "@actions/core": "^1.2.7",
     "@actions/github": "^4.0.0",
     "@notionhq/client": "^0.4.4",
+    "dayjs": "^1.11.7",
     "form-data": "^4.0.0"
   }
 }
