@@ -1,6 +1,10 @@
 const core = require("@actions/core")
 const github = require("@actions/github")
 const dayjs = require("dayjs")
+const timezone = require("dayjs/plugin/timezone")
+const utc = require("dayjs/plugin/utc")
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // $& means the whole matched string
@@ -48,7 +52,7 @@ function extractGithubParams() {
     notionProperties: {
       githubUrl: githubUrlProperty,
       status: statusProperty,
-      mergedAt: dayjs().format(),
+      mergedAt: dayjs().tz("Asia/Bangkok").format(),
     },
   }
 }
